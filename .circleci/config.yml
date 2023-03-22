@@ -5,7 +5,7 @@ version: 2.1
 # -------------------------
 
 orbs:
-  win: circleci/windows@2.4.0
+  win: circleci/windows@5.0
 
 # -------------------------
 #        REFERENCES
@@ -113,7 +113,7 @@ executors:
     <<: *defaults
     docker:
       - image: reactnativecommunity/react-native-android:7.0
-    resource_class: "xlarge"
+    resource_class: "2xlarge"
     environment:
       - TERM: "dumb"
       - ADB_INSTALL_TIMEOUT: 10
@@ -1079,7 +1079,7 @@ jobs:
       - run:
           name: Install Node JS
           # Note: Version set separately for non-Windows builds, see above.
-          command: choco install nodejs-lts
+          command: choco install  --no-progress -y nodejs-lts
 
       # Setup Dependencies
       - run:
@@ -1104,7 +1104,7 @@ jobs:
 
       - run:
           name: Install Android SDK Tools
-          command: choco install android-sdk;
+          command: choco install -y android-sdk;
 
       - save_cache:
           key: *windows_choco_cache_key
@@ -1366,9 +1366,9 @@ jobs:
           name: Build HermesC for Windows
           command: |
             if (-not(Test-Path -Path $Env:HERMES_WS_DIR\win64-bin\hermesc.exe)) {
-              choco install --no-progress cmake --version 3.14.7
+              choco install --no-progress -y cmake --version 3.14.7
               if (-not $?) { throw "Failed to install CMake" }
-              choco install --no-progress python3
+              choco install --no-progress -y python3
               if (-not $?) { throw "Failed to install Python" }
 
               cd $Env:HERMES_WS_DIR\icu
